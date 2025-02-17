@@ -1,0 +1,26 @@
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+
+[tool.pylint]
+max-line-length = 120
+disable = [
+    "too-many-return-statements",
+    "missing-function-docstring",
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "unspecified-encoding",
+    "too-many-ancestors",
+    "too-many-arguments",
+    "too-many-locals",
+    "line-too-long",
+]
+good-names = ["k", "c", "n", "p", "i"]
+
+[tool.black]
+line-length = 120
+target-version = ['py310', 'py311']
+
+[tool.isort]
+profile = "black"
+line_length = 120

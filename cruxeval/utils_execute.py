@@ -56,11 +56,11 @@ def unsafe_execute(check_program, result, timeout):
             exec_globals = {}
             with swallow_io():
                 with time_limit(timeout):
-                    exec(check_program, exec_globals)
+                    exec(check_program, exec_globals)  # pylint: disable=exec-used
             result.append("passed")
         except TimeoutException:
             result.append("timed out")
-        except BaseException as e:
+        except BaseException as e:  # pylint: disable=broad-exception-caught
             result.append(f"failed: {e}")
 
         # Needed for cleaning up.
