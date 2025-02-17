@@ -50,7 +50,7 @@ def main():
                 pass
 
         headers = ["Model", "Pass@1", "Pass@5"]
-        data.sort(key=lambda x: x[1])
+        data.sort(key=lambda x: x[0])
         table = tabulate(data, headers=headers, tablefmt="pipe")
         print(f"********* CRUXEval-{mode.capitalize()} *********\n")
         print(table)
