@@ -42,6 +42,7 @@ def run_giga(model, mode, cot, temperature, parallel):
     outputs_dict = {f"sample_{i}": [j[0] for j in o] for i, o in enumerate(outputs)}
     with open(save_dir, "w") as fp:
         json.dump(outputs_dict, fp)
+    print(f"Result saved to {save_dir.absolute()}")
     return outputs
 
 
