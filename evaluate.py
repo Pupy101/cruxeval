@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
@@ -47,8 +48,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--generations-path", help="JSON path containing outputs to evaluate.", type=str)
     parser.add_argument("--scored-path", help="path to dump scored results(*.json file)", type=str, default=None)
-
     args = parser.parse_args()
+
+    if args.scored_path is None:
+        parent = Path(args.generations_path).parent.name
+        args.scored_path = EVAL_DIR / parent / "scores.json"
+    Path(args.scored_path).parent.mkdir(exist_ok=True, parents=True)
+
+    if Path(args.scored_path).exists():
+        print(f"Already exists path: {args.scored_path}. Scoring skip")
+        sys.exit(0)
+
     with open(args.generations_path, "r") as fp:
         _generations = json.load(fp)
     print(f"Scoring {args.generations_path}... expect around a minute")
@@ -58,10 +68,6 @@ if __name__ == "__main__":
     )
     print("Finished!")
     print("pass@1:", round(results_["pass_at_1"], 1), "pass@5:", round(results_["pass_at_5"], 1))
-    if args.scored_path is None:
-        parent = Path(args.generations_path).parent.name
-        args.scored_path = EVAL_DIR / parent / "scores.json"
-    Path(args.scored_path).parent.mkdir(exist_ok=True, parents=True)
     print(f"Dumping to {args.scored_path}")
     with open(args.scored_path, "w") as fp:
         json.dump(results_, fp)
